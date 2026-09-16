@@ -1,0 +1,13 @@
+log_id,date,machine_id,maintenance_type,component,technician_note,action_status
+ML-0001,2026-06-10,M001,Inspection,Tool,No abnormality found,Closed
+ML-0002,2026-06-17,M002,Tool replacement,Tool,Tool replaced after wear threshold,Closed
+ML-0003,2026-06-24,M003,Lubrication,Spindle,Lubricant level restored,Closed
+ML-0004,2026-07-01,M004,Bearing inspection,Bearing,Minor vibration noted; monitor next run,Follow-up
+ML-0005,2026-07-08,M001,Inspection,Tool,No abnormality found,Closed
+ML-0006,2026-07-15,M002,Tool replacement,Tool,Tool replaced after wear threshold,Closed
+ML-0007,2026-07-22,M003,Lubrication,Spindle,Lubricant level restored,Closed
+ML-0008,2026-07-29,M004,Bearing inspection,Bearing,Minor vibration noted; monitor next run,Follow-up
+ML-0009,2026-08-05,M001,Inspection,Tool,No abnormality found,Closed
+ML-0010,2026-08-12,M002,Tool replacement,Tool,Tool replaced after wear threshold,Closed
+ML-0011,2026-08-19,M003,Lubrication,Spindle,Lubricant level restored,Closed
+ML-0012,2026-08-26,M004,Bearing inspection,Bearing,Minor vibration noted; monitor next run,Follow-up
