@@ -1,9 +1,9 @@
-failure_id,date,machine_id,failure_type,symptom,root_cause_status,resolution
-FR-0001,2026-06-18,M001,Tool wear,Surface quality drop,Confirmed,Tool replaced
-FR-0002,2026-06-29,M002,Heat dissipation,Process temperature rise,Under review,Cooling system cleaned
-FR-0003,2026-07-10,M003,Power failure,Unexpected stop,Confirmed,Power module replaced
-FR-0004,2026-07-21,M004,Overstrain,High torque and low RPM,Confirmed,Load reduced and bearing checked
-FR-0005,2026-08-01,M001,Tool wear,Surface quality drop,Confirmed,Tool replaced
-FR-0006,2026-08-12,M002,Heat dissipation,Process temperature rise,Under review,Cooling system cleaned
-FR-0007,2026-08-23,M003,Power failure,Unexpected stop,Confirmed,Power module replaced
-FR-0008,2026-09-03,M004,Overstrain,High torque and low RPM,Confirmed,Load reduced and bearing checked
+failure_id,date,machine_id,failure_type,symptom,root_cause_status,resolution,equipment_model,synthetic,outcome
+FR-0001,2026-06-18,M001,Tool wear,Surface quality drop,Confirmed,Tool replaced,SYN-MILL-01,True,Tooling replaced in simulated case
+FR-0002,2026-06-29,M002,Heat dissipation,Process temperature rise,Under review,Cooling system cleaned,SYN-MILL-01,True,Cooling restored; cause still under review
+FR-0003,2026-07-10,M003,Power failure,Unexpected stop,Confirmed,Power module replaced,SYN-MILL-01,True,Simulated restart completed
+FR-0004,2026-07-21,M004,Overstrain,High torque and low RPM,Confirmed,Load reduced and bearing checked,SYN-MILL-01,True,Load reduced; bearing follow-up required
+FR-0005,2026-08-01,M001,Tool wear,Surface quality drop,Confirmed,Tool replaced,SYN-MILL-01,True,Tooling replaced in simulated case
+FR-0006,2026-08-12,M002,Heat dissipation,Process temperature rise,Under review,Cooling system cleaned,SYN-MILL-01,True,Cooling restored; cause still under review
+FR-0007,2026-08-23,M003,Power failure,Unexpected stop,Confirmed,Power module replaced,SYN-MILL-01,True,Simulated restart completed
+FR-0008,2026-09-03,M004,Overstrain,High torque and low RPM,Confirmed,Load reduced and bearing checked,SYN-MILL-01,True,Load reduced; bearing follow-up required

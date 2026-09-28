@@ -143,6 +143,15 @@ def generate_source_files(rng: np.random.Generator) -> None:
     })
     save_source(history, "historical_records.csv")
 
+    generate_knowledge_sources()
+
+
+def generate_knowledge_sources() -> None:
+    """Create clearly labelled reference cases without regenerating telemetry."""
+    save_source(pd.DataFrame({"machine_id": [f"M{i:03d}" for i in range(1, 5)],
+                              "equipment_model": ["SYN-MILL-01"] * 4,
+                              "synthetic": [True] * 4}), "equipment_registry.csv")
+
     maintenance = pd.DataFrame({
         "log_id": [f"ML-{index:04d}" for index in range(1, 13)],
         "date": pd.date_range("2026-06-10", periods=12, freq="7D"),
@@ -154,6 +163,14 @@ def generate_source_files(rng: np.random.Generator) -> None:
         ] * 3,
         "action_status": ["Closed", "Closed", "Closed", "Follow-up"] * 3,
     })
+    maintenance["equipment_model"] = "SYN-MILL-01"
+    maintenance["synthetic"] = True
+    maintenance["symptom"] = ["Routine tool condition review", "Tool wear and surface quality drop",
+                               "Lubrication level low", "Minor bearing vibration"] * 3
+    maintenance["action"] = ["Inspected tooling", "Replaced worn tooling", "Restored lubricant level",
+                              "Checked bearing and requested follow-up"] * 3
+    maintenance["outcome"] = ["No abnormality observed", "Surface quality improved in simulated follow-up",
+                               "Lubricant level restored; cause not established", "Vibration unresolved; follow-up required"] * 3
     save_source(maintenance, "maintenance_logs.csv")
 
     failures = pd.DataFrame({
@@ -165,18 +182,33 @@ def generate_source_files(rng: np.random.Generator) -> None:
         "root_cause_status": ["Confirmed", "Under review", "Confirmed", "Confirmed"] * 2,
         "resolution": ["Tool replaced", "Cooling system cleaned", "Power module replaced", "Load reduced and bearing checked"] * 2,
     })
+    failures["equipment_model"] = "SYN-MILL-01"
+    failures["synthetic"] = True
+    failures["outcome"] = ["Tooling replaced in simulated case", "Cooling restored; cause still under review",
+                            "Simulated restart completed", "Load reduced; bearing follow-up required"] * 2
     save_source(failures, "failure_records.csv")
 
     manual = SOURCE_DIR / "equipment_manuals.md"
     manual.write_text(
-        """# Equipment Manual Extracts\n\n"
-        "## Torque and rotational speed\n"
-        "A sustained increase in torque together with reduced rotational speed may indicate increased mechanical resistance. Stop escalation and inspect the tool, shaft, bearing condition, and load path according to site safety procedures.\n\n"
-        "## Temperature\n"
-        "A process temperature above the approved operating range requires a cooling and load check before continued operation. Do not treat a model alert as permission to bypass safety controls.\n\n"
-        "## Tool wear\n"
-        "Inspect and replace tooling according to the approved wear limit and qualified maintenance procedure.\n\n"
-        "_Demo reference only. This is synthetic documentation and is not an OEM manual._\n""",
+        """# Synthetic Equipment Manual
+Equipment model: SYN-MILL-01
+Version: demo-1
+This is synthetic documentation, not an OEM manual or an approved safety procedure.
+
+## SYN-MAN-001 | Torque and rotational speed
+Higher torque with lower rotational speed may indicate mechanical resistance or changing load.
+Qualified personnel should check tooling, shaft, bearing condition, and load path against approved site procedures.
+This pattern alone does not establish a root cause.
+
+## SYN-MAN-002 | Temperature and cooling
+Rising process temperature can warrant a cooling and load review against the approved operating range.
+Check cooling performance and compare subsequent readings. No numerical safety limit is provided by this demo manual.
+Model alerts do not authorise bypassing safety controls.
+
+## SYN-MAN-003 | Tool wear and lubrication
+Review tool wear, lubrication records, and tooling condition against the approved maintenance procedure.
+Replacement and lubrication decisions require qualified review. A past repair does not prove the present fault has the same cause.
+""",
         encoding="utf-8",
     )
     print(f"Created {manual}")

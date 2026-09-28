@@ -1,19 +1,18 @@
-# Equipment Manual Extracts
+# Synthetic Equipment Manual
+Equipment model: SYN-MILL-01
+Version: demo-1
+This is synthetic documentation, not an OEM manual or an approved safety procedure.
 
-"
-        "## Torque and rotational speed
-"
-        "A sustained increase in torque together with reduced rotational speed may indicate increased mechanical resistance. Stop escalation and inspect the tool, shaft, bearing condition, and load path according to site safety procedures.
+## SYN-MAN-001 | Torque and rotational speed
+Higher torque with lower rotational speed may indicate mechanical resistance or changing load.
+Qualified personnel should check tooling, shaft, bearing condition, and load path against approved site procedures.
+This pattern alone does not establish a root cause.
 
-"
-        "## Temperature
-"
-        "A process temperature above the approved operating range requires a cooling and load check before continued operation. Do not treat a model alert as permission to bypass safety controls.
+## SYN-MAN-002 | Temperature and cooling
+Rising process temperature can warrant a cooling and load review against the approved operating range.
+Check cooling performance and compare subsequent readings. No numerical safety limit is provided by this demo manual.
+Model alerts do not authorise bypassing safety controls.
 
-"
-        "## Tool wear
-"
-        "Inspect and replace tooling according to the approved wear limit and qualified maintenance procedure.
-
-"
-        "_Demo reference only. This is synthetic documentation and is not an OEM manual._
+## SYN-MAN-003 | Tool wear and lubrication
+Review tool wear, lubrication records, and tooling condition against the approved maintenance procedure.
+Replacement and lubrication decisions require qualified review. A past repair does not prove the present fault has the same cause.

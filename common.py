@@ -11,35 +11,79 @@ def inject_theme() -> None:
     st.set_page_config(page_title="Northstar Monitoring", page_icon="N", layout="wide")
     st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-    :root { --navy:#07111f; --panel:#10243a; --line:#1d3850; --text:#e7eef5; --muted:#91a7b9; --cyan:#67d8e8; --green:#9de6b4; --orange:#ff9b66; }
-    html, body, [class*="css"] { font-family:'DM Sans', sans-serif; color:var(--text); font-size:16px; }
-    .stApp { background:var(--navy); } [data-testid="stHeader"] { background:transparent; }
-    [data-testid="stSidebar"] { background:#091827; border-right:1px solid var(--line); } [data-testid="stSidebar"] * { color:var(--text); }
-    .block-container { max-width:1320px; padding:2.6rem 3rem 3.5rem; } [data-testid="stHorizontalBlock"] { align-items:stretch; gap:1rem; } [data-testid="column"] { display:flex; flex-direction:column; } [data-testid="column"] > div { width:100%; }
-    h1, h2, h3 { font-family:'Space Grotesk', sans-serif; letter-spacing:0; color:var(--text); }
-    h1 { font-size:clamp(2.8rem, 5vw, 4.6rem); line-height:1; margin:.35rem 0 .65rem; } h2 { font-size:2rem; } h3 { margin:.15rem 0 .55rem; font-size:1.35rem; }
-    .topbar { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1px solid var(--line); padding-bottom:1.35rem; margin-bottom:1.7rem; }
-    .kicker, .section-label { color:var(--cyan); font-size:.82rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; } .section-label { margin:2rem 0 .85rem; }
-    .subtle, .microcopy { color:var(--muted); font-size:1rem; } .subtle { margin:0; }
-    .live-badge { border:1px solid #2b5869; background:#0d2939; color:var(--cyan); padding:.5rem .75rem; font-size:.72rem; font-weight:700; letter-spacing:.08em; } .live-badge span { display:inline-block; width:7px; height:7px; background:var(--green); border-radius:50%; margin-right:.45rem; }
-    .kpi, .panel, .next-step { background:var(--panel); border:1px solid var(--line); } .kpi { min-height:108px; height:100%; box-sizing:border-box; padding:1.2rem 1.3rem; }
-    .kpi-label, .panel-title { color:var(--muted); font-size:.78rem; font-weight:700; letter-spacing:.1em; } .kpi-value { font-family:'Space Grotesk'; font-size:2.25rem; font-weight:700; margin-top:.7rem; }
-    .kpi.high-risk .kpi-value { color:var(--orange); } .kpi.medium-risk .kpi-value { color:#f5c46b; } .kpi.low-risk .kpi-value { color:var(--green); } .kpi.accent .kpi-value { color:var(--cyan); }
-    .panel-title { margin-bottom:1rem; font-size:.9rem; } [data-testid="stVerticalBlockBorderWrapper"] { background:var(--panel); border:1px solid var(--line); border-radius:0; padding:1.35rem 1.5rem; height:100%; box-sizing:border-box; }
-    .reading-row { display:flex; justify-content:space-between; border-bottom:1px solid var(--line); padding:.78rem 0; color:var(--muted); font-size:1rem; } .reading-row:last-child { border-bottom:0; } .reading-row strong { color:var(--text); font-size:1.05rem; }
-    .sensor-value { color:var(--text); font-family:'Space Grotesk'; font-size:2.25rem; font-weight:700; margin-top:.7rem; white-space:nowrap; } .sensor-value span { color:var(--muted); font-family:'DM Sans'; font-size:.95rem; font-weight:500; }
-    .sensor-state { font-size:.68rem; font-weight:700; letter-spacing:.08em; margin-top:.3rem; } .sensor-state.typical { color:var(--green); } .sensor-state.high { color:var(--orange); } .sensor-state.low { color:var(--cyan); }
-    .alert-state { font-size:.8rem; font-weight:700; letter-spacing:.08em; margin-top:.45rem; } .alert-state.normal { color:var(--green); } .alert-state.alert { color:var(--orange); } .threshold { color:var(--muted); font-size:.8rem; margin-top:.25rem; }
-    .signal-number { color:var(--cyan); font-family:'Space Grotesk'; font-size:5.5rem; font-weight:700; line-height:1; margin:1.4rem 0 .7rem; } .progress-track { background:#1d354b; height:9px; margin:1.2rem 0 .7rem; } .progress-fill { background:var(--orange); height:9px; }
-    .microcopy { font-size:.9rem; } .next-step { display:flex; justify-content:space-between; align-items:center; margin-top:1.5rem; padding:1.35rem 1.5rem; } .next-step h3 { font-size:1.2rem; } .next-arrow { color:var(--cyan); font-size:2.4rem; }
-    .action-title { font-family:'Space Grotesk'; font-size:1.55rem; line-height:1.2; font-weight:700; color:var(--text); }
-    .status-hero { background:linear-gradient(110deg, #102f43, #10243a); border:1px solid #2b596d; border-left:7px solid var(--orange); padding:1.6rem 1.8rem; display:flex; justify-content:space-between; align-items:end; gap:1rem; } .status-hero-label { color:var(--muted); font-size:.8rem; font-weight:700; letter-spacing:.12em; } .status-hero-value { font-family:'Space Grotesk'; font-size:3.5rem; font-weight:700; line-height:1; margin-top:.5rem; } .status-hero-risk { color:var(--cyan); font-family:'Space Grotesk'; font-size:3.8rem; font-weight:700; line-height:1; text-align:right; }
-    .stButton > button { background:#173750; border:1px solid #2b596d; color:var(--text); border-radius:2px; font-size:1rem; min-height:2.8rem; } .stButton > button:hover { border-color:var(--cyan); color:var(--cyan); } [data-testid="stMetric"] { background:var(--panel); border:1px solid var(--line); padding:1.2rem; } [data-testid="stMetricLabel"] { font-size:.9rem; } [data-testid="stMetricValue"] { font-size:2rem; }
-    .stCaption, [data-testid="stCaptionContainer"] { font-size:.9rem; }
-    @media (max-width:800px) { .block-container { padding:1.2rem 1rem 2rem; } .topbar { align-items:flex-start; gap:1rem; flex-direction:column; } }
+    :root { --panel:#1b2226; --line:#354047; --text:#edf2f4; --muted:#b0bdc4;
+            --cyan:#79ddce; --green:#9de6b4; --orange:#ff9b66; }
+    .block-container { max-width:1440px; padding:2.8rem 2rem 3rem; }
+    .stMain h1 { font-size:2rem; line-height:1.25; margin:0 0 .4rem; color:var(--text); }
+    .stMain h2 { font-size:1.6rem; } .stMain h3 { font-size:1.3rem; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap:1rem;
+              border-bottom:1px solid var(--line); padding-bottom:1rem; margin-bottom:.4rem; }
+    .kicker, .section-label { color:var(--cyan); font-size:1rem; font-weight:700; letter-spacing:0; }
+    .kicker { margin-bottom:.35rem; } .section-label { margin:1rem 0 .3rem; }
+    .subtle, .microcopy { color:var(--muted); font-size:.9rem; line-height:1.5; margin:0; }
+    .live-badge { border:1px solid var(--line); color:var(--cyan); padding:.4rem .7rem;
+                  font-size:.75rem; border-radius:4px; white-space:nowrap; }
+    .live-badge span { display:inline-block; width:6px; height:6px; background:var(--green);
+                       border-radius:50%; margin-right:.4rem; }
+    .kpi { background:var(--panel); border:1px solid var(--line); border-radius:6px;
+           min-height:110px; box-sizing:border-box; padding:1rem; }
+    .kpi-label, .panel-title { color:var(--muted); font-size:.95rem; font-weight:650; letter-spacing:0; }
+    .kpi-value { color:var(--text); font-size:2.1rem; font-weight:700; margin-top:.5rem;
+                 line-height:1.25; overflow-wrap:anywhere; }
+    .kpi.accent { border-top:3px solid var(--cyan); } .kpi.accent .kpi-value { color:var(--cyan); }
+    .panel-title { margin-bottom:.65rem; }
+    .sensor-value { color:var(--text); font-size:2.1rem; font-weight:700; line-height:1.35;
+                    display:flex; flex-wrap:wrap; align-items:baseline; gap:.35rem; }
+    .sensor-value span { color:var(--muted); font-size:.85rem; font-weight:400; }
+    .alert-state { font-size:.75rem; font-weight:650; margin-top:.15rem; }
+    .alert-state.normal { color:var(--green); } .alert-state.alert { color:var(--orange); }
+    .action-title { font-size:1.35rem; line-height:1.5; font-weight:700; color:var(--text); overflow-wrap:anywhere; }
+    .status-hero { background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--green);
+                   border-radius:6px; padding:1.2rem 1.5rem; display:flex; justify-content:space-between;
+                   align-items:center; flex-wrap:wrap; gap:1rem; }
+    .status-hero.high { border-left-color:var(--orange); } .status-hero.medium { border-left-color:#f5c46b; }
+    .status-hero-label { color:var(--muted); font-size:.8rem; }
+    .status-hero-value { font-size:2.6rem; font-weight:700; line-height:1.2; margin-top:.4rem; }
+    .status-hero-risk { color:var(--cyan); font-size:3.2rem; font-weight:700; line-height:1.2; }
+    .st-key-sensor_strip > [data-testid="stLayoutWrapper"] {
+        flex:1 1 160px; min-width:0; max-width:100%; }
+    .st-key-sensor_strip > [data-testid="stLayoutWrapper"] > [data-testid="stVerticalBlock"] > [data-testid="stElementContainer"]:first-child p {
+        min-height:2.8rem; margin-bottom:0; font-size:.95rem; }
+    .stMain [data-testid="stText"] { white-space:pre-wrap; overflow-wrap:anywhere; }
+    .stMain [data-testid="stMetricValue"] { font-size:2.2rem; white-space:normal; overflow-wrap:anywhere; }
+    @media (max-width:1000px) {
+        .stMain [data-testid="stColumn"] { min-width:min(100%, 260px); flex:1 1 260px; }
+        .stMain [data-testid="stHorizontalBlock"] { flex-wrap:wrap; gap:1rem; }
+    }
+    @media (max-width:640px) {
+        .block-container { padding:2.8rem 1rem 2rem; }
+        .topbar { align-items:flex-start; flex-direction:column; }
+        .status-hero { padding:1rem; } .status-hero-value { font-size:1.95rem; }
+        .status-hero-risk { font-size:2.8rem; }
+        .kpi { min-height:90px; } .st-key-sensor_strip > [data-testid="stLayoutWrapper"] { flex-basis:145px; }
+    }
     </style>
     """, unsafe_allow_html=True)
+
+
+def render_sensors(result: dict, dataset: pd.DataFrame | None = None) -> None:
+    """Display wrapping sensor tiles with optional dataset-derived alert limits."""
+    with st.container(horizontal=True, key="sensor_strip"):
+        for feature in FEATURES:
+            guide = SENSOR_GUIDE[feature]
+            value = result["readings"][feature]
+            shown_value, unit = display_reading(feature, value)
+            with st.container(width=180, border=True):
+                st.markdown(f":material/{guide['icon']}: **{guide['label']}**")
+                st.markdown(f'<div class="sensor-value">{shown_value:.1f} <span>{unit}</span></div>', unsafe_allow_html=True)
+                if dataset is None:
+                    st.caption("Current reading")
+                else:
+                    alarm = alert_state(dataset, feature, value)
+                    threshold, direction = alert_threshold(dataset, feature)
+                    threshold_value, threshold_unit = display_reading(feature, threshold)
+                    st.markdown(f'<div class="alert-state {"alert" if alarm == "ALERT" else "normal"}">{alarm}</div>', unsafe_allow_html=True)
+                    st.caption(f"Alert {direction} {threshold_value:.1f} {threshold_unit}")
 
 
 @st.cache_resource
@@ -105,12 +149,28 @@ def sensor_state(dataset: pd.DataFrame, feature: str, value: float) -> str:
 
 
 def record_history(readings: dict[str, float], sample: int) -> None:
+    result = st.session_state.result
+    result["data_time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     st.session_state.history.append({
-        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "timestamp": result["data_time"],
+        "recorded_at": time.time(),
         "machine_id": st.session_state.get("machine_id", "M001"),
         "sample": sample,
         **readings,
+        "failure_probability": result["failure_probability"],
+        "status": result["status"],
+        "main_driver": result["feature_impact"][0]["feature"],
     })
+
+
+def ensure_history_predictions(predictor: MachinePredictor) -> None:
+    """Upgrade old in-memory history once after the app hot-reloads."""
+    for row in st.session_state.history:
+        if all(key in row for key in ("failure_probability", "status", "main_driver")):
+            continue
+        result = predictor.predict({feature: row[feature] for feature in FEATURES})
+        row.update(failure_probability=result["failure_probability"], status=result["status"],
+                   main_driver=result["feature_impact"][0]["feature"])
 
 
 def advance_replay(dataset: pd.DataFrame, predictor: MachinePredictor) -> None:
@@ -122,6 +182,7 @@ def advance_replay(dataset: pd.DataFrame, predictor: MachinePredictor) -> None:
     record_history(readings, len(st.session_state.history) + 1)
     st.session_state.explanation, st.session_state.ollama_used = explain(st.session_state.result)
     st.session_state.replay_started_at = time.time()
+    st.session_state.replay_start_index = st.session_state.sample_index
     st.session_state.last_update = datetime.now().strftime("%H:%M:%S")
 
 
@@ -131,7 +192,8 @@ def sync_replay(dataset: pd.DataFrame, predictor: MachinePredictor) -> None:
         return
     started_at = st.session_state.get("replay_started_at", time.time())
     interval = st.session_state.get("replay_interval", 2)
-    target_index = int((time.time() - started_at) // interval) % len(dataset)
+    start_index = st.session_state.get("replay_start_index", 0)
+    target_index = (start_index + int((time.time() - started_at) // interval)) % len(dataset)
     if target_index == st.session_state.sample_index:
         return
     from llm import explain
@@ -154,6 +216,7 @@ def reset_replay(dataset: pd.DataFrame, predictor: MachinePredictor) -> None:
     record_history(readings, 1)
     st.session_state.explanation, st.session_state.ollama_used = explain(st.session_state.result)
     st.session_state.replay_started_at = time.time()
+    st.session_state.replay_start_index = 0
     st.session_state.monitoring_enabled = True
     st.session_state.fault_scenario = ""
     st.session_state.last_update = datetime.now().strftime("%H:%M:%S")
@@ -204,6 +267,8 @@ def initialize_state(dataset: pd.DataFrame, predictor: MachinePredictor) -> None
         st.session_state.replay_interval = 2
     if "replay_started_at" not in st.session_state:
         st.session_state.replay_started_at = time.time()
+    if "replay_start_index" not in st.session_state:
+        st.session_state.replay_start_index = 0
     if "sample_index" not in st.session_state:
         st.session_state.sample_index = 0
     if "history" not in st.session_state:
@@ -214,5 +279,6 @@ def initialize_state(dataset: pd.DataFrame, predictor: MachinePredictor) -> None
     if "explanation" not in st.session_state:
         from llm import explain
         st.session_state.explanation, st.session_state.ollama_used = explain(st.session_state.result)
-    st.session_state.last_update = datetime.now().strftime("%H:%M:%S")
+    if "last_update" not in st.session_state:
+        st.session_state.last_update = datetime.now().strftime("%H:%M:%S")
     sync_replay(dataset, predictor)
