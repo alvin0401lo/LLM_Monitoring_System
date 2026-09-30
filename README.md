@@ -84,6 +84,8 @@ The local reference library contains 12 maintenance cases, eight failure cases a
 
 AI Analysis includes an offline reference search and a retrieval preview when Ollama is unavailable. Generated analyses and chat messages retain their exact supplied excerpts, with IDs such as `[SYN-MAN-002]` and `[ML-0002]`. The interface flags unknown identifiers and absent reference citations; valid identifiers alone do not establish that a claim is supported. Synthetic cases cannot validate real diagnosis, forecasting or maintenance safety. English keyword retrieval supports a few Chinese domain aliases, not general multilingual semantic search.
 
+In the sidebar, **Reference files** accepts UTF-8 TXT, Markdown and CSV files up to 200 KB (CSV: 1-200 rows). Upload one or more files, then choose one for the current machine. Only the selected file is eligible for AI Analysis, reference search and AI Chat; relevant excerpts compete with the built-in references for the three RAG slots. An unrelated selected file will not be sent to Ollama. CSV rows with a different `machine_id` or a future `date` are excluded. Uploaded files are session-only, are not saved to the project, and do not change the Random Forest model or its failure probability. Select a file separately for each machine. Uploaded content is unverified and may be sent to the configured Ollama endpoint; do not use sensitive records through a public tunnel. PDF files are not supported by this lightweight prototype.
+
 To regenerate only the reference corpus without changing sensor datasets:
 
 ```powershell

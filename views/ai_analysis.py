@@ -88,7 +88,8 @@ def render_llm_analysis() -> None:
         if record.get("content"):
             show_sources(record["context"].get("retrieved_documents", []), record.get("citations"))
         else:
-            preview = prepare_context(machine_context(st.session_state.result, st.session_state.history, st.session_state.machine_id))
+            preview = prepare_context(machine_context(st.session_state.result, st.session_state.history, st.session_state.machine_id),
+                                      uploaded=st.session_state.get("selected_uploaded_reference"))
             st.caption("Retrieval preview only: these excerpts have not been analysed by Ollama.")
             show_sources(preview["retrieved_documents"])
 
@@ -96,13 +97,14 @@ def render_llm_analysis() -> None:
 render_llm_analysis()
 render_rule_summary()
 
-with st.expander("Search the synthetic reference library", expanded=False):
+with st.expander("Search reference files", expanded=False):
     with st.form("reference_search"):
         query = st.text_input("Reference question", placeholder="Temperature rise and cooling checks")
         searched = st.form_submit_button("Search references", icon=":material/search:")
     if searched and query.strip():
         snapshot = machine_context(st.session_state.result, st.session_state.history, st.session_state.machine_id)
-        show_sources(retrieve(query, snapshot["machine_id"], snapshot["data_time"]))
+        show_sources(retrieve(query, snapshot["machine_id"], snapshot["data_time"],
+                              uploaded=st.session_state.get("selected_uploaded_reference")))
 
 with st.expander("Available source files", expanded=False):
     for name, state, detail in SOURCE_CATALOG:

@@ -1,7 +1,9 @@
 import streamlit as st
+import hashlib
 
 from common import get_dataset, get_predictor, initialize_state, inject_theme
 from llm import ANALYSIS_INTERVAL, ollama_settings, update_analysis
+from rag import parse_uploaded_reference
 
 inject_theme()
 initialize_state(get_dataset(), get_predictor())
@@ -15,6 +17,23 @@ with st.sidebar:
         st.markdown(":material/check_circle: ML model ready")
         st.markdown(":material/check_circle: Local rules ready")
         st.caption("Synthetic manuals and maintenance cases available for scoped RAG retrieval.")
+    with st.expander("Reference files"):
+        files = st.file_uploader("Upload manuals or logs", type=["txt", "md", "csv"],
+                                 accept_multiple_files=True, max_upload_size=1, key="reference_uploads")
+        choices = {f"{file.name} ({hashlib.sha256(file.getvalue()).hexdigest()[:8]})": file
+                   for file in files}
+        selected = st.selectbox("Use file for current machine", ["None", *choices],
+                                key=f"reference_choice_{st.session_state.machine_id}")
+        try:
+            st.session_state.selected_uploaded_reference = (
+                parse_uploaded_reference(choices[selected].name, choices[selected].getvalue())
+                if selected != "None" else None
+            )
+        except ValueError as error:
+            st.session_state.selected_uploaded_reference = None
+            st.error(str(error))
+        st.caption("Relevant excerpts from the selected file may join the synthetic references. Session only; "
+                   "do not upload sensitive records through a public tunnel.")
 
 pages = [
     st.Page("views/overview.py", title="Overview", icon=":material/dashboard:"),

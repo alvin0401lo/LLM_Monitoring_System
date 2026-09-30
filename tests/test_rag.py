@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from rag import SOURCE_DIR, citation_report, prepare_context, retrieve
+from rag import SOURCE_DIR, citation_report, parse_uploaded_reference, prepare_context, retrieve
 
 
 class ReferenceRetrievalTests(unittest.TestCase):
@@ -62,3 +62,29 @@ class ReferenceRetrievalTests(unittest.TestCase):
         self.assertTrue(citation_report("Uncited reference claim", docs)["uncited"])
         self.assertFalse(citation_report("No reference evidence", [])["uncited"])
 
+    def test_selected_upload_changes_retrieval_and_citations(self):
+        uploaded = parse_uploaded_reference("inspection.md", b"## Cooling\nInspect coolant flow before restart.")
+        self.assertFalse(any(doc["file"] == "inspection.md" for doc in
+                             retrieve("coolant flow", "M001", "2026-09-28")))
+        documents = retrieve("coolant flow", "M001", "2026-09-28", uploaded=uploaded)
+        selected = next(doc for doc in documents if doc["file"] == "inspection.md")
+        self.assertFalse(selected["synthetic"])
+        self.assertEqual(citation_report(f"Check [{selected['source_id']}]", documents)["cited"],
+                         [selected["source_id"]])
+
+    def test_uploaded_csv_filters_machine_and_future_rows(self):
+        content = (b"machine_id,date,observation\n"
+                   b"M001,2026-09-27,coolant pump fault\n"
+                   b"M002,2026-09-27,other pump fault\n"
+                   b"M001,2026-10-01,future pump fault\n")
+        uploaded = parse_uploaded_reference("logs.csv", content)
+        documents = retrieve("pump fault", "M001", "2026-09-28", uploaded=uploaded)
+        matched = [doc for doc in documents if doc["file"] == "logs.csv"]
+        self.assertEqual(len(matched), 1)
+        self.assertIn("coolant pump fault", matched[0]["text"])
+
+    def test_invalid_upload_is_rejected(self):
+        for name, content in (("manual.pdf", b"%PDF"), ("manual.txt", b"\xff"),
+                              ("manual.txt", b""), ("manual.csv", b"no header\n")):
+            with self.subTest(name=name, content=content), self.assertRaises(ValueError):
+                parse_uploaded_reference(name, content)

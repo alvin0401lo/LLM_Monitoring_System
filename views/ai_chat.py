@@ -60,7 +60,8 @@ for message in machine_messages:
 question = st.chat_input("Ask about the current machine", disabled=not configured) or st.session_state.pop("pending_question", None)
 if question and configured:
     machine_id = st.session_state.machine_id
-    snapshot = prepare_context(machine_context(st.session_state.result, st.session_state.history, machine_id), question)
+    snapshot = prepare_context(machine_context(st.session_state.result, st.session_state.history, machine_id),
+                               question, st.session_state.get("selected_uploaded_reference"))
     conversation = [message for message in st.session_state.chat_messages if message.get("machine_id") == machine_id]
     sources = [
         ("AI4I synthetic replay", "Sensor snapshot and available recent replay summary."),

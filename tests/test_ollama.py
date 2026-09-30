@@ -14,6 +14,7 @@ import pandas as pd
 from streamlit.testing.v1 import AppTest
 
 from llm import OllamaError, analysis_due, machine_context, request_ollama, update_analysis
+from rag import parse_uploaded_reference
 
 
 class FakeOllamaHandler(BaseHTTPRequestHandler):
@@ -122,6 +123,7 @@ class OllamaIntegrationTests(unittest.TestCase):
         self.assertTrue(analysis_due(record, self.settings, 1800))
         self.assertTrue(analysis_due(record, self.settings, 10, force=True))
         self.assertTrue(analysis_due(record, {**self.settings, "model": "other-model"}, 10))
+        self.assertTrue(analysis_due(record, {**self.settings, "reference_id": ("manual.md", "ABCDEF12")}, 10))
 
     def test_background_request_failure_retains_success_and_manual_retry(self):
         executor = ControlledExecutor()
@@ -156,6 +158,21 @@ class OllamaIntegrationTests(unittest.TestCase):
             record = update_analysis(state, self.result, self.history, "M002", self.settings, now=2)
             self.assertNotIn("content", record)
             self.assertEqual(state["analysis_records"]["M001"]["content"], "Machine one")
+
+    def test_selected_upload_enters_analysis_and_triggers_refresh(self):
+        executor = ControlledExecutor()
+        uploaded = parse_uploaded_reference("temperature.md", b"Inspect air temperature and cooling fan operation.")
+        state = {"selected_uploaded_reference": uploaded}
+        with patch("llm.analysis_executor", return_value=executor):
+            update_analysis(state, self.result, self.history, "M001", self.settings, now=0)
+            first = state["analysis_job"]["context"]["retrieved_documents"]
+            self.assertTrue(any(doc["file"] == "temperature.md" for doc in first))
+            executor.futures[0].set_result("Analysis with selected file")
+            state["selected_uploaded_reference"] = None
+            update_analysis(state, self.result, self.history, "M001", self.settings, now=5)
+            self.assertEqual(len(executor.futures), 2)
+            second = state["analysis_job"]["context"]["retrieved_documents"]
+            self.assertFalse(any(doc["file"] == "temperature.md" for doc in second))
 
     def test_unconfigured_host_never_submits(self):
         with patch("llm.analysis_executor") as executor:
